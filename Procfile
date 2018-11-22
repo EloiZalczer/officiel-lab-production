@@ -1,0 +1,1 @@
+web: java -Dport=$PORT -DSTORE_PARAMETER=xml -Dparam2=value2 -jar target/application-name-1.0.0-SNAPSHOT.jar
