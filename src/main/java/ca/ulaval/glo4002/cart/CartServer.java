@@ -6,6 +6,7 @@ import javax.servlet.DispatcherType;
 
 import ca.ulaval.glo4002.cart.application.shop.ItemNotFoundException;
 import ca.ulaval.glo4002.cart.context.ApplicationContext;
+import ca.ulaval.glo4002.cart.context.XmlPersistenceContext;
 import ca.ulaval.glo4002.cart.interfaces.rest.cart.CartResource;
 import ca.ulaval.glo4002.cart.interfaces.rest.filters.CORSFilter;
 import ca.ulaval.glo4002.cart.interfaces.rest.filters.DoNotCopyFromTheWebFilter;
@@ -20,9 +21,18 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 public class CartServer implements Runnable {
-    private static final int PORT = 7222;
+	private static final int DEFAULT_PORT = 7222;
+	public static final String PORT_PARAMETER = "port";
+    private static int port = 7222;
 
     public static void main(String[] args) {
+    	String portString = System.getProperty(PORT_PARAMETER);
+    	if(portString != null) {
+    		port = Integer.parseInt(portString);
+    	}
+    	else {
+    		port = DEFAULT_PORT;
+    	}
         new CartServer().run();
     }
 
@@ -36,7 +46,7 @@ public class CartServer implements Runnable {
     }
 
     private void startServer() {
-        Server server = new Server(PORT);
+        Server server = new Server(port);
         ServletContextHandler contextHandler = new ServletContextHandler(server, "/");
         contextHandler.addFilter(EntityManagerContextFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 
