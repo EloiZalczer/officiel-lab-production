@@ -24,7 +24,6 @@ public class CartApplicationService {
             List<Cart> carts = cartRepository.listCarts();
             return getCartByOwner(email, carts);
         } catch (Exception e) {
-        	e.printStackTrace();
 	        throw new CannotFindCartException("Cannot find cart for " + email);
         }
 	}
